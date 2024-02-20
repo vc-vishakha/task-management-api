@@ -15,6 +15,19 @@ export class TasksService {
     })
   }
 
+  findTaskById(res: Response, taskId: number): ResponseType<Task> {
+    const selectedTask = this.tasks.find(task => task.id === taskId);
+    if (!selectedTask) {
+      return res.status(404).send({
+        message: 'Task not found',
+      })
+    }
+    return res.status(200).send({
+      message: 'Task details get successfully',
+      data: selectedTask
+    })
+  }
+
   create(res: Response, task: CreateTaskDto): ResponseType<Task> {
     const newTask = { id: Date.now(), ...task };
     this.tasks.push(newTask);
