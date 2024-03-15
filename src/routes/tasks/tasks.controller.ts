@@ -10,9 +10,9 @@ export class TasksController {
   @Get()
   async findAll(@Res() response: Response) {
     try {
-      const studentData = await this.taskService.findAll();
+      const taskDetails = await this.taskService.findAll();
       return response.status(HttpStatus.OK).json({
-        message: 'All students data found successfully', data: studentData,
+        message: 'All tasks data found successfully', data: taskDetails,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
