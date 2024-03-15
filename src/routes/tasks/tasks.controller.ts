@@ -53,7 +53,7 @@ export class TasksController {
     try {
       const existingTask = await this.taskService.update(id, updateTaskDto);
       return response.status(HttpStatus.OK).json({
-        message: 'Student has been successfully updated',
+        message: 'Task has been successfully updated',
         data: existingTask,
       });
     } catch (err) {
