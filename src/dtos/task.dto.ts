@@ -11,7 +11,7 @@ import { TaskStatus } from 'src/models/task.model';
 
 export class TaskDto {
 
-  @Transform(({ value }): string => (value as string).trim())
+  @Transform(({ value }): string => (value as string)?.trim())
   @IsString()
   @MinLength(5, { message: 'Task title should be of minimum 5 characters' })
   @MaxLength(100, { message: 'Task title should be of maximum 100 characters' })
@@ -19,7 +19,7 @@ export class TaskDto {
   @IsNotEmpty({ message: `Task title should not be empty` })
   title: string;
 
-  @Transform(({ value }): string => (value as string).trim())
+  @Transform(({ value }): string => (value as string)?.trim())
   @IsString()
   @MinLength(10, { message: 'Task description should be of minimum 10 characters' })
   @MaxLength(250, { message: 'Task description should be of maximum 250 characters' })

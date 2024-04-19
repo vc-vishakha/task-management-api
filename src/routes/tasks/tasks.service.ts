@@ -25,7 +25,7 @@ export class TasksService {
   }
 
   async create(task: TaskDto) {
-    const newTaskPayload = { ...task, title: task.title.trim() };
+    const newTaskPayload = { ...task, title: task.title?.trim() };
     const newTask = await this.taskModel.create(newTaskPayload);
     return newTask;
   }
