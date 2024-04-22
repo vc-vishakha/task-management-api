@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TaskDto, UpdateTaskDto } from 'src/dtos/task.dto';
+import { TaskStatus } from 'src/models/task.model';
 import { Task, TaskDocument } from 'src/schema/task.schema';
 
 @Injectable()
@@ -44,5 +45,13 @@ export class TasksService {
       throw new NotFoundException(`Task not found`);
     }
     return selectedTaskId;
+  }
+
+  async findTaskByStatus(taskStatus: TaskStatus) {
+    const existingTask = await this.taskModel.find({ status: taskStatus });
+    if (!existingTask) {
+      throw new NotFoundException(`No tasks in ${taskStatus} state`);
+    }
+    return existingTask;
   }
 }

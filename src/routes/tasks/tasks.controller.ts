@@ -1,7 +1,11 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
+import {
+  Body, Controller, DefaultValuePipe, Delete,
+  Get, HttpStatus, Param, Post, Put, Query, Res
+} from '@nestjs/common';
 import { Response } from 'express';
 import { TasksService } from './tasks.service';
 import { TaskDto, UpdateTaskDto } from 'src/dtos/task.dto';
+import { TaskStatus } from 'src/models/task.model';
 
 @Controller('task')
 export class TasksController {
@@ -13,6 +17,21 @@ export class TasksController {
       const taskDetails = await this.taskService.findAll();
       return response.status(HttpStatus.OK).json({
         message: 'All tasks data found successfully', data: taskDetails,
+      });
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
+  }
+
+  @Get('/filter')
+  async findByStatus(
+    @Res() response: Response,
+    @Query('status', new DefaultValuePipe(TaskStatus.OPEN)) status: TaskStatus,
+  ) {
+    try {
+      const taskList = await this.taskService.findTaskByStatus(status);
+      return response.status(HttpStatus.OK).json({
+        message: `List of ${status} Tasks found successfully`, data: taskList,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
