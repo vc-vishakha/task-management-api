@@ -6,6 +6,7 @@ import { Response } from 'express';
 import { TasksService } from './tasks.service';
 import { TaskDto, UpdateTaskDto } from 'src/dtos/task.dto';
 import { TaskStatus } from 'src/models/task.model';
+import { AuthorizationException } from 'src/services/authorization.exception';
 
 @Controller('task')
 export class TasksController {
@@ -64,6 +65,18 @@ export class TasksController {
         message: 'Error: Task not created!',
         error: 'Bad Request'
       });
+    }
+  }
+
+  // @TODO: Add AuthorizationException in auth module
+  @Post('/public')
+  async getPublicTask(@Res() response: Response, @Body() credentials: any) {
+    if(credentials.username === 'admin' && credentials.password === 'admin') {
+      return response.status(HttpStatus.OK).json({
+        message: 'Public page access',
+      });
+    } else {
+      throw new AuthorizationException('Invalid credentials');
     }
   }
 
